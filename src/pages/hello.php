@@ -6,6 +6,6 @@
     <title>My Symfony Framework</title>
 </head>
 <body>
-    <h1>Hello <?=htmlspecialchars(isset($name) ? $name : 'World', ENT_QUOTES)?></h1>
+    <h1>Hello <?=htmlspecialchars(ucfirst($name), ENT_QUOTES)?></h1>
 </body>
 </html>
