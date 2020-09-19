@@ -20,12 +20,16 @@ $context->fromRequest($request);
 $urlMatcher = new UrlMatcher($routes, $context);
 
 try {
-    extract($urlMatcher->match($request->getPathInfo()));
+    // extract($urlMatcher->match($request->getPathInfo()));
+    $resultat = ($urlMatcher->match($request->getPathInfo()));
 
-    ob_start();
-    include __DIR__ . '/../src/pages/' . $_route . '.php';
+    $request->attributes->add($resultat);
+    $response = call_user_func($resultat['_controller'], $request);
 
-    $response = new Response(ob_get_clean());
+    // ob_start();
+    // include __DIR__ . '/../src/pages/' . $_route . '.php';
+
+    // $response = new Response(ob_get_clean());
 
 } catch (ResourceNotFoundException $exception) {
     $response = new Response('La page demandée n\'existe pas', 404);
