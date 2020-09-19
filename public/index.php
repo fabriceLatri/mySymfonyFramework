@@ -20,11 +20,22 @@ $context->fromRequest($request);
 $urlMatcher = new UrlMatcher($routes, $context);
 
 try {
-    // extract($urlMatcher->match($request->getPathInfo()));
+    // Recherche la route depuis l'url donnée.
     $resultat = ($urlMatcher->match($request->getPathInfo()));
 
+    // Retrouver la classe à instancier (encore sous forme de string) dans le tableau associatif $resultat['_controller']:
+    $className = substr($resultat['_controller'], 0, strpos($resultat['_controller'],'::'));
+
+    // Retrouver la méthode à utiliser (encore sous forme de string) dans le tableau associatif $resultat['_controller']:
+    $methodName = substr($resultat['_controller'], strpos($resultat['_controller'],'::') +2);
+
+    // Creation du callable
+    $callable = [new $className, $methodName];
+
+    // var_dump($className, $methodName); die;
+
     $request->attributes->add($resultat);
-    $response = call_user_func($resultat['_controller'], $request);
+    $response = call_user_func($callable, $request);
 
     // ob_start();
     // include __DIR__ . '/../src/pages/' . $_route . '.php';
