@@ -29,8 +29,7 @@ $argumentResolver = new ArgumentResolver();
 
 try {
     // Recherche la route depuis l'url donnée.
-    $resultat = ($urlMatcher->match($request->getPathInfo()));
-    $request->attributes->add($resultat);
+    $request->attributes->add($urlMatcher->match($request->getPathInfo()));
 
     // Permet de retrouver le controller depuis routes.php grâce à la clé '_controller'. Attention, la value entre l'instance et la méthode doit être séparée par ::
     $controller = $controllerResolver->getController($request);
