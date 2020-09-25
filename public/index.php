@@ -2,12 +2,13 @@
 
 require __DIR__ . '/../vendor/autoload.php';
 
+use Symfony\Component\Routing\Route;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Routing\RequestContext;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Matcher\UrlMatcher;
-use Symfony\Component\Routing\RequestContext;
-use Symfony\Component\Routing\Route;
-use Symfony\Component\Routing\RouteCollection;
+use Symfony\Component\HttpKernel\Controller\ArgumentResolver;
+use Symfony\Component\HttpKernel\Controller\ControllerResolver;
 use Symfony\Component\Routing\Exception\ResourceNotFoundException;
 
 $request = Request::createFromGlobals();
@@ -19,28 +20,29 @@ $context->fromRequest($request);
 
 $urlMatcher = new UrlMatcher($routes, $context);
 
+// ControllerResolver permet de retrouver le controller à appeller.
+$controllerResolver = new ControllerResolver();
+
+// ArgumentResolver permet d'envoyer les arguments demandés par la méthode appelée.
+$argumentResolver = new ArgumentResolver();
+
+
 try {
     // Recherche la route depuis l'url donnée.
     $resultat = ($urlMatcher->match($request->getPathInfo()));
-
-    // Retrouver la classe à instancier (encore sous forme de string) dans le tableau associatif $resultat['_controller']:
-    $className = substr($resultat['_controller'], 0, strpos($resultat['_controller'],'::'));
-
-    // Retrouver la méthode à utiliser (encore sous forme de string) dans le tableau associatif $resultat['_controller']:
-    $methodName = substr($resultat['_controller'], strpos($resultat['_controller'],'::') +2);
-
-    // Creation du callable
-    $callable = [new $className, $methodName];
-
-    // var_dump($className, $methodName); die;
-
     $request->attributes->add($resultat);
-    $response = call_user_func($callable, $request);
 
-    // ob_start();
-    // include __DIR__ . '/../src/pages/' . $_route . '.php';
+    // Permet de retrouver le controller depuis routes.php grâce à la clé '_controller'. Attention, la value entre l'instance et la méthode doit être séparée par ::
+    $controller = $controllerResolver->getController($request);
 
-    // $response = new Response(ob_get_clean());
+    /*  Permet de récupérer les arguments depuis la request->attributes (grâce à l'URL Matcher):
+
+        Récupère la valeur de {name} en pour l'injecter par réflexion à la méthode du controller invoquée.
+    */
+    $arguments = $argumentResolver->getArguments($request, $controller);
+
+    // call_user_func permet d'invoquer la méthode d'un objet par le système de callable [Nom de l'instance, Nom de la méthode].
+    $response = call_user_func_array($controller, $arguments);
 
 } catch (ResourceNotFoundException $exception) {
     $response = new Response('La page demandée n\'existe pas', 404);
