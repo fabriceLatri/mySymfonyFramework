@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Framework;
+namespace Simplex;
 
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -9,7 +9,7 @@ use Symfony\Component\HttpKernel\Controller\ControllerResolver;
 use Symfony\Component\Routing\Exception\ResourceNotFoundException;
 use Symfony\Component\Routing\Matcher\UrlMatcher;
 
-class Kernel
+class Framework
 {
     protected $matcher;
     protected $controllerResolver;
