@@ -1,0 +1,1 @@
+C:37:"PHPUnit\Runner\DefaultTestResultCache":177:{a:2:{s:7:"defects";a:1:{s:20:"IndexTest::testHello";i:3;}s:5:"times";a:2:{s:20:"IndexTest::testHello";d:0.003;s:49:"Simplex\Tests\FrameworkTest::testNotFoundHandling";d:0.034;}}}
