@@ -2,14 +2,16 @@
 
 namespace Calendar\Controller;
 
+use Calendar\Model\LeapYear;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 class LeapYearController
 {
-    public function index(Request $request)
+    public function index(Request $request, string $year) : Response
     {
-        if (is_leap_year($request->attributes->get('year'))) {
+        $leapYear = new LeapYear();
+        if ($leapYear->isLeapYear($year)) {
             return new Response('Yep, this is a leap year!');
         }
 
