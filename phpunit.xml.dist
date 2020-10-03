@@ -7,7 +7,7 @@
   </coverage>
   <testsuites>
     <testsuite name="Test Suite">
-      <directory>./src/Simplex/Tests</directory>
+      <directory>./src/tests/Simplex/Tests</directory>
     </testsuite>
   </testsuites>
 </phpunit>
