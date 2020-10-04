@@ -52,6 +52,7 @@ class FrameworkTest extends TestCase
             ->expects($this->once())
             ->method('getContext')
             ->will($this->returnValue($this->createMock(RequestContext::class)));
+
         $controllerResolver = new ControllerResolver();
         $argumentResolver = new ArgumentResolver();
 

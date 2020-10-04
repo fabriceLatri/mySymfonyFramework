@@ -6,8 +6,11 @@
     </include>
   </coverage>
   <testsuites>
-    <testsuite name="Test Suite">
+    <testsuite name="Test Suite Simplex">
       <directory>./src/tests/Simplex/Tests</directory>
+    </testsuite>
+    <testsuite name="Test Suite Calendar">
+      <directory>./src/tests/Calendar/Tests</directory>
     </testsuite>
   </testsuites>
 </phpunit>

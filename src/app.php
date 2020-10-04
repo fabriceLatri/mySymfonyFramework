@@ -10,7 +10,7 @@ $routes->add('leap_year', new Route('/is_leap_year/{year}', [
     '_controller' => 'Calendar\Controller\LeapYearController::index'
 ]));
 
-$routes->add('Hello', new Route('/{name}', [
+$routes->add('hello', new Route('/{name}', [
     'name' => 'World',
     '_controller' => 'Calendar\Controller\HelloController::index'
 ]));

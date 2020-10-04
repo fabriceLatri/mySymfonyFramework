@@ -1,3 +1,7 @@
 # vendor
 
 vendor
+
+# PHPUnit 
+.phpunit.result.cache
+cov
